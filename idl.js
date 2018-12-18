@@ -300,9 +300,7 @@ class InterfaceData {
     return this._maplike;
   }
 
-  get members() {
-    // let members = new Map([this._consts, this._eventhandlers, this._getters, this._methods, this._properties, this._setters]);
-    // return members;
+  get members(options) {
     let members = new Map();
     for (let [k, v] of this._consts) {
       members.set(k, v);

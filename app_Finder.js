@@ -108,18 +108,18 @@ class _Finder {
         interfaces.push(matches[m]);
       }
     }
-    const id = new InterfaceData(interfaces[0]);
-    const flagged = this._isFlagged(id);
+    const idl = new InterfaceData(interfaces[0]);
+    const flagged = this._isFlagged(idl);
     if (flagged.flagged) {
       const answer = await this._confirm(flagged.message);
       if (answer.confirm == 'n') { process.exit(); }
     }
     const builder = new Builder();
-    builder.writeBCD(id);
+    builder.writeBCD(idl);
     // Remimplement and add to help after conversion to yargs.
     if (!args.includes('-j')) {
       //The j flag means json only.
-      builder.build(id.command);
+      builder.build(idl);
     }
   }
 

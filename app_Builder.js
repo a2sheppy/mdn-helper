@@ -31,6 +31,17 @@ const FLAGS = {
 }
 
 class _Builder {
+  // START HERE
+  // Current the app adapts the command-line interface for building with an IDL
+  // file.
+  // 1. A client module calls Builder.build(InterfaceData).
+  // 2. Inside build(), InterfaceData.command is retrieved and passed to
+  //    Builder._initPages() which parses it the same way command line does.
+  // NEW PLAN
+  // 1. build() will call a new function InterfaceData.getNeeded(options).
+  //    options has flags indicating whether flags or OTs should be included.
+  // 2. Builder._initPages() is now called with a neededPages map. The Current
+  //    initPages() is renamed pagesFromCLI().
 
   _initPages(args) {
     args = this._normalizeArguments(args);
@@ -44,7 +55,7 @@ class _Builder {
     sharedQuestions[parentType] = parentName;
     sharedQuestions['name'] = parentName;
     sharedQuestions.add(parentType, parentName);
-    
+
     // We no longer need the conent type and name.
     args.shift();
     args.shift();
@@ -198,7 +209,9 @@ class _Builder {
     bcdm.getBCD(interfaceData, outFilePath);
   }
 
-  async build(args) {
+  async build(idlFile) {
+    this._idlFile = idlFile;
+    let args = idlFile.command;
     this._initPages(args);
     for (let p in this.pages) {
       await this.pages[p].askQuestions();
